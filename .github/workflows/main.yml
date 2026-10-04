@@ -1,7 +1,8 @@
-name: Build and Release YTMusicUltimate
+name: Build and Release YTMusicNxt
+
 on:
   workflow_dispatch:
-    inputs: 
+    inputs:
       ipa_url:
         description: "URL to the decrypted IPA file"
         default: ""
@@ -26,7 +27,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build YTMusicUltimate
+    name: Build YTMusicNxt
     runs-on: macos-latest
     permissions:
       contents: write
@@ -46,7 +47,7 @@ jobs:
       - name: Validate IPA URL
         run: |
           curl -L -r 0-1023 -o sample.part "${{ inputs.ipa_url }}" > /dev/null 2>&1
-          
+
           file_type=$(file --mime-type -b sample.part)
 
           if [[ "$file_type" != "application/x-ios-app" && "$file_type" != "application/zip" ]]; then
@@ -84,14 +85,22 @@ jobs:
       - name: Download iOS SDK
         if: steps.theos.outputs.cache-hit != 'true'
         run: |
-          git clone --quiet -n --depth=1 --filter=tree:0 https://github.com/theos/sdks.git
-          cd sdks
+          # Pinned: unpinned dependencies mean a build can change under you.
+          SDK_REF=0222fd5413cf4b9af096f37b4621afa2688572f7
+          mkdir -p sdks && cd sdks
+          git init -q
+          git remote add origin https://github.com/theos/sdks.git
+          git config core.sparseCheckout true
           git sparse-checkout set --no-cone iPhoneOS16.5.sdk
-          git checkout
+          git fetch --quiet --depth=1 origin "$SDK_REF"
+          git checkout -q FETCH_HEAD
           mv *.sdk $THEOS/sdks
 
       - name: Install cyan
-        run: pipx install --force https://github.com/asdfzxcvbn/pyzule-rw/archive/main.zip
+        run: |
+          # Pinned for the same reason. This is the step that rewrites and signs
+          # the IPA, so an unpinned main is the riskiest dependency here.
+          pipx install --force https://github.com/asdfzxcvbn/pyzule-rw/archive/740d3716dcd98c20c000f12cdb88f1f0b2a533a4.zip
 
       - name: Download YouTube Music
         run: wget "${{ inputs.ipa_url }}" --no-verbose -O ytm.ipa
@@ -99,17 +108,53 @@ jobs:
       - name: Build Tweak for Sideloading
         run: |
           cd main
-          make clean package DEBUG=0 FINALPACKAGE=1 SIDELOADING=1
+          # -j1: parallel builds trip spurious module errors in the ObjC++
+          # sources with a modern clang against the theos 16.5 SDK.
+          make clean package DEBUG=0 FINALPACKAGE=1 SIDELOADING=1 -j1
+          test -n "$(ls packages/*.deb 2>/dev/null)" || { echo "::error::no deb produced"; exit 1; }
           mv packages/*.deb ../ytmult.deb
 
       - name: Inject tweak into provided IPA
-        run: cyan -i ytm.ipa -o YTMusicUltimate.ipa -uwsf ytmult.deb -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }} 
+        run: cyan -i ytm.ipa -o YTMusicNxt.ipa -uwsf ytmult.deb -n "${{ inputs.display_name }}" -b "${{ inputs.bundle_id }}"
+
+      - name: Verify packaged IPA
+        run: |
+          # A green build is not proof the tweak is actually in the IPA, and a
+          # silently-uninjected tweak ships as a broken download. Check it.
+          set -euo pipefail
+          rm -rf verify && mkdir verify
+          unzip -q YTMusicNxt.ipa -d verify
+          APP="verify/Payload/YouTubeMusic.app"
+
+          fail() { echo "::error::$1"; exit 1; }
+
+          [ -d "$APP" ] || fail "Payload/YouTubeMusic.app not found in IPA"
+          [ -f "$APP/Frameworks/YTMusicUltimate.dylib" ] || fail "YTMusicUltimate.dylib not injected"
+          [ -d "$APP/Frameworks/CydiaSubstrate.framework" ] || fail "CydiaSubstrate.framework not injected"
+
+          otool -L "$APP/YouTubeMusic" | grep -q "YTMusicUltimate.dylib" \
+            || fail "LC_LOAD_DYLIB for YTMusicUltimate.dylib is missing"
+
+          actual_id=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP/Info.plist")
+          [ "$actual_id" = "${{ inputs.bundle_id }}" ] \
+            || fail "bundle id is '$actual_id', expected '${{ inputs.bundle_id }}'"
+
+          # The dylib must not carry a link-time dependency on iOS 26 symbols:
+          # YouTube Music's minimum is iOS 16, so UIGlassEffect has to be
+          # resolved at runtime or the tweak will not load on older systems.
+          if nm -u "$APP/Frameworks/YTMusicUltimate.dylib" | grep -qiE "UIGlassEffect|UICornerConfiguration"; then
+            fail "dylib has a link-time dependency on iOS 26 symbols"
+          fi
+
+          echo "IPA verified: $actual_id, $(stat -f%z "$APP/Frameworks/YTMusicUltimate.dylib") byte dylib"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2.5.0
         with:
-          name: YTMusicUltimate (${{ github.run_number }})
-          files: YTMusicUltimate.ipa
+          name: YTMusicNxt (${{ github.run_number }})
+          files: |
+            YTMusicNxt.ipa
+            ytmult.deb
           draft: true
 
       - name: Output Release URL
