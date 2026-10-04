@@ -31,7 +31,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 7;
+        return 8;
     } if (section == 2) {
         return 3;
     } if (section == 3) {
@@ -68,7 +68,8 @@
             @{@"title": LOC(@"SELECTABLE_LYRICS"), @"desc": LOC(@"SELECTABLE_LYRICS_DESC"), @"key": @"selectableLyrics"},
             @{@"title": LOC(@"VOLBAR"), @"desc": LOC(@"VOLBAR_DESC"), @"key": @"volBar"},
             @{@"title": LOC(@"NO_AUTORADIO"), @"desc": LOC(@"NO_AUTORADIO_DESC"), @"key": @"disableAutoRadio"},
-            @{@"title": LOC(@"SKIP_CONTENT_WARNING"), @"desc": LOC(@"SKIP_CONTENT_WARNING_DESC"), @"key": @"skipWarning"}
+            @{@"title": LOC(@"SKIP_CONTENT_WARNING"), @"desc": LOC(@"SKIP_CONTENT_WARNING_DESC"), @"key": @"skipWarning"},
+            @{@"title": LOC(@"VOLUME_BOOST"), @"desc": LOC(@"VOLUME_BOOST_DESC"), @"key": @"volumeBoost"}
         ];
 
         NSDictionary *data = settingsData[indexPath.row];
@@ -212,6 +213,7 @@
         @{@"key": @"volBar"},
         @{@"key": @"disableAutoRadio"},
         @{@"key": @"skipWarning"},
+        @{@"key": @"volumeBoost"},
     ];
 
     NSDictionary *data = settingsData[sender.tag];

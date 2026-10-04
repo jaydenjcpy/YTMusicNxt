@@ -62,6 +62,8 @@
 "LIQUID_GLASS_BUTTONS_DESC" = "Applies the iOS 26 Liquid Glass material to navigation bar buttons. Requires iOS 26.";
 "LIQUID_GLASS_TABBAR" = "Liquid glass tab bar";
 "LIQUID_GLASS_TABBAR_DESC" = "Renders the tab bar with the iOS 26 Liquid Glass material. Requires iOS 26.";
+"VOLUME_BOOST" = "Volume boost";
+"VOLUME_BOOST_DESC" = "Swipe in from the right edge and drag up or down to set the app volume, up to 2000%.";
 
 "TABBAR_SETTINGS" = "Tab bar options";
 "STARTUP_TAB" = "Startup tab";
