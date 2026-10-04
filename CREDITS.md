@@ -74,41 +74,22 @@ YTMABConfig
               carried over.
 
 
-YouMusicPiP
------------
-  Upstream:   https://github.com/PoomSmart/YouMusicPiP
-  Based on:   https://github.com/PoomSmart/YouPiP
-  Author:     PoomSmart
-  Licence:    MIT, Copyright (c) 2021 - 2024 PoomSmart
-  Files:      Source/MusicPiP/YouMusicPiP.x, Source/Headers/MusicPiP.h
-  Changes:    This is the one port that had to be rebuilt rather than moved.
-              Upstream hooks four things that no longer exist in 9.39:
-              MLPIPController (now MLPIPControllerImpl),
-              YTBackgroundabilityPolicy and its Impl (deleted),
-              YTPlayerViewController's -appWillResignActive: (the callback moved
-              to YTPlayerPIPController as -appWillResignActive, with no
-              argument), and YTIPlayabilityStatus's -hasPictureInPicture. Three
-              of MLDefaultPlayerViewFactory's ...ForVideo: methods are gone too.
-              Its server-side assignment had to be rewritten rather than
-              dropped: YTIIosMediaHotConfig no longer has an
-              enablePictureInPicture property, but it does have
+YouMusicPiP (evaluated, not included)
+-----------------------------------
+  Upstream:   https://github.com/PoomSmart/YouMusicPiP  (MIT, PoomSmart)
+  Status:     Ported, then pulled again. Nothing derived from it ships today.
+              Recording it here so the findings are not lost: four things it
+              hooks are gone in 9.39 (MLPIPController is now
+              MLPIPControllerImpl, YTBackgroundabilityPolicy and its Impl are
+              deleted, YTIPlayabilityStatus lost -hasPictureInPicture), and
+              the "app is leaving" callback moved from
+              YTPlayerViewController's -appWillResignActive: to
+              YTPlayerPIPController's -appWillResignActive, with no argument.
+              Its one live lever is the media hot config, whose
+              enablePictureInPicture property is also gone in favour of
               enablePipForNonPremiumUsers and
-              enablePipForNonBackgroundableContent, which are what gate
-              picture in picture in a music app. Those are set from
-              MLDefaultPlayerViewFactory, where upstream sets the old one, and
-              this is the part that actually turns the feature on.
-              The client-side gates are forced as well: YTPlayerPIPController's
-              isPictureInPictureAllowed, isEligibleForPictureInPicture and
-              canEnablePictureInPicture, MLPIPControllerImpl's
-              pictureInPictureSupported, AVPictureInPictureController's
-              supported check, and YTIPlayabilityStatus's two playability
-              flags. Leaving the app is caught on YTPlayerPIPController
-              -appWillResignActive, which then activates the MediaHub PiP
-              controller and starts the AVPlayer one.
-              Forcing the AVPlayer render view (renderViewType 6) is kept, since
-              hamplayer views cannot be handed to AVPlayerViewController.
-              Defaults off, because it changes how video renders even when PiP
-              is never used.
+              enablePipForNonBackgroundableContent.
+  Licence:    MIT, Copyright (c) 2021 - 2024 PoomSmart.
 
 
 Before vendoring another tweak into this project
