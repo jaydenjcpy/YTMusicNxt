@@ -86,7 +86,7 @@
         case 0:
             return 1;
         case 1:
-            return 5;
+            return 6;
         case 2:
             return 1;
         case 3:
@@ -136,7 +136,8 @@
             @{@"title": LOC(@"PLAYER_SETTINGS"), @"image": @"play.rectangle"},
             @{@"title": LOC(@"THEME_SETTINGS"), @"image": @"paintbrush"},
             @{@"title": LOC(@"NAVBAR_SETTINGS"), @"image": @"sidebar.trailing"},
-            @{@"title": LOC(@"TABBAR_SETTINGS"), @"image": @"dock.rectangle"}
+            @{@"title": LOC(@"TABBAR_SETTINGS"), @"image": @"dock.rectangle"},
+            @{@"title": LOC(@"AB_FLAGS"), @"image": @"switch.2"}
         ];
 
         NSDictionary *settingData = settingsData[indexPath.row];
@@ -224,7 +225,8 @@
                                  [PlayerSettingsController class],
                                  [ThemeSettingsController class],
                                  [NavBarSettingsController class],
-                                 [OtherSettingsController class]];
+                                 [OtherSettingsController class],
+                                 [ABFlagsSettingsController class]];
 
         if (indexPath.row >= 0 && indexPath.row < controllers.count) {
             UIViewController *controller = [[controllers[indexPath.row] alloc] init];

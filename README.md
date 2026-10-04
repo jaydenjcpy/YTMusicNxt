@@ -66,6 +66,7 @@ Ported code from other tweaks keeps its original licence and author:
 | --- | --- | --- | --- |
 | [VolumeBoostYT](https://github.com/irum0320/VolumeBoostYT) | vasirakcalgux | MIT | Volume boost up to 2000% with an edge swipe |
 | [Return-YouTube-Music-Dislikes](https://github.com/PoomSmart/Return-YouTube-Music-Dislikes) | PoomSmart | GPL-3.0 | Real dislike counts from the Return YouTube Dislike database |
+| [YTMABConfig](https://github.com/PoomSmart/YTMABConfig) | PoomSmart | GPL-3.0 | Searchable browser for YouTube's A/B experiment flags |
 
 Full details of what each port changed are in [CREDITS.md](CREDITS.md). The same credits are shown in the app under YTMusicUltimate > Links.
 

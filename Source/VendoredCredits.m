@@ -32,6 +32,11 @@
                          license:@"GPL-3.0"
                              url:@"https://github.com/PoomSmart/Return-YouTube-Music-Dislikes"
                          changes:@"Settings screen replaced by switches in YTMusicUltimate settings, defaults off, nil video IDs handled."],
+            [self creditWithName:@"YTMABConfig"
+                          author:@"PoomSmart"
+                         license:@"GPL-3.0"
+                             url:@"https://github.com/PoomSmart/YTMABConfig"
+                         changes:@"Settings screen replaced by a searchable flag browser; config chain walked defensively."],
         ];
     });
 

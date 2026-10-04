@@ -136,3 +136,14 @@
 "RETURN_DISLIKES_RAW_DESC" = "Use the count before YouTube hid it, instead of the reconstructed one";
 "RETURN_DISLIKES_VOTE" = "Submit your votes";
 "RETURN_DISLIKES_VOTE_DESC" = "Send your likes and dislikes to the Return YouTube Dislike database";
+
+"AB_FLAGS" = "A/B flags";
+"AB_FLAGS_ENABLED" = "Override A/B flags";
+"AB_FLAGS_ENABLED_DESC" = "Let you turn YouTube's experiments on or off";
+"AB_FLAGS_SEARCH" = "Search flags";
+"AB_FLAGS_EMPTY" = "No flags found";
+"AB_FLAGS_FOOTER" = "%lu flags. Orange ones have been changed; the switch shows the value YouTube currently returns.";
+"AB_FLAGS_RESET" = "Reset";
+"AB_FLAGS_RESET_MESSAGE" = "This clears every A/B flag you changed and puts YouTube back in charge. The app has to restart for it to take effect.";
+"AB_FLAGS_RESTART" = "A/B flags are hooked when the app starts. Relaunch YouTube Music for your changes to take effect.";
+"OK" = "OK";

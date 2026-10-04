@@ -47,6 +47,33 @@ Return-YouTube-Music-Dislikes
               uses on iOS 12, since theos' iPhoneOS SDK ships no ICU headers.
 
 
+YTMABConfig
+-----------
+  Upstream:   https://github.com/PoomSmart/YTMABConfig
+  Author:     PoomSmart
+  Licence:    GPL-3.0
+  Files:      Source/ABFlags/, Source/Prefs/ABFlagsSettingsController.m,
+              Source/Headers/YTMAppDelegate.h
+  Changes:    The hook is kept: it walks
+              YTMAppDelegate -> _MDXServices -> _MDXConfig -> the three config
+              objects and hooks every BOOL getter on them, which is how you turn
+              an experiment on before YouTube serves it to your account. All
+              three links and all three config classes still exist in 9.39.
+              Two things changed. The chain is walked defensively, because
+              upstream raises an exception when an instance is nil and that
+              takes the app down if YouTube renames an ivar. And an
+              un-overridden flag now calls the original implementation instead
+              of a value cached at hook time, so a flag YouTube reloads later is
+              not frozen at its launch value.
+              Upstream's Settings.x is dropped for the same reason as the
+              dislikes port: YTMSettingsSectionItem's itemWithTitle:... and
+              switchItemWithTitle:... factories are gone in 9.39. The replacement
+              browser sorts flags by class and selector, adds a search field,
+              tints overridden flags orange, and can reset them all. Category
+              grouping, import/export, copy and "view modified settings" are not
+              carried over.
+
+
 Before vendoring another tweak into this project
 ------------------------------------------------
   1. Add an entry to +[YTMUVendoredCredit allCredits] in Source/VendoredCredits.m.
