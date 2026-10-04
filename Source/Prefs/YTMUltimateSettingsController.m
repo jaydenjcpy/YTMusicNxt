@@ -59,7 +59,16 @@
     } if (section == 3) {
         NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
         NSString *appVersion = infoDictionary[@"CFBundleShortVersionString"];
-        return [NSString stringWithFormat:@"\nYouTubeMusic: v%@\nYTMusicUltimate: v%@", appVersion, @(OS_STRINGIFY(TWEAK_VERSION))];
+        NSString *footer = [NSString stringWithFormat:@"\nYouTubeMusic: v%@\nYTMusicUltimate: v%@", appVersion, @(OS_STRINGIFY(TWEAK_VERSION))];
+
+        // Third-party tweaks we vendored in have to stay credited in the app
+        // itself, not just in the README. See Source/VendoredCredits.m.
+        NSArray<NSString *> *creditLines = [YTMUVendoredCredit footerLines];
+        if (creditLines.count > 0) {
+            footer = [footer stringByAppendingFormat:@"\n\n%@:\n%@", LOC(@"VENDORED_CREDITS"), [creditLines componentsJoinedByString:@"\n"]];
+        }
+
+        return footer;
     }
 
     return nil;

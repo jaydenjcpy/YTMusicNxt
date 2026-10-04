@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "../Headers/VendoredCredits.h"
 #import "PremiumSettingsController.h"
 #import "PlayerSettingsController.h"
 #import "ThemeSettingsController.h"

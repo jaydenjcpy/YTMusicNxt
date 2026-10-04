@@ -56,4 +56,20 @@ If the github action works and you cannot find where you can download the result
 
 
 
+## Credits
+
+YTMusicUltimate is GPL-3.0, by [Ginsu](https://github.com/ginsudev) and [Dayanch96](https://github.com/dayanch96). This fork keeps that licence and attribution.
+
+Ported code from other tweaks keeps its original licence and author:
+
+| Tweak | Author | Licence | Upstream |
+| --- | --- | --- | --- |
+| [VolumeBoostYT](https://github.com/irum0320/VolumeBoostYT) | vasirakcalgux | MIT | Volume boost up to 2000% with an edge swipe |
+
+Full details of what each port changed are in [CREDITS.md](CREDITS.md). The same credits are shown in the app under YTMusicUltimate > Links.
+
+## Third-party code
+
+If you want to port another tweak into this project, it has to be credited in `README.md`, in `CREDITS.md`, in `Source/VendoredCredits.m` (which is what renders the credits in the app), and in a header comment on each ported file. Source is public, so binaries have to ship with their corresponding source.
+
 Made with ❤ by Ginsu and Dayanch96

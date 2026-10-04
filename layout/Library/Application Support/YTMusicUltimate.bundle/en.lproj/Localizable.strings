@@ -125,3 +125,5 @@
 "ALL_DOWNLOADS" = "all download audios"; //keep it lowercase
 "DELETE" = "Delete";
 "RENAME" = "Rename";
+
+"VENDORED_CREDITS" = "Third-party tweaks used with permission";
