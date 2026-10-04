@@ -24,7 +24,11 @@ static BOOL playbackRateButton(void) {
 }
 
 - (void)setPlaybackRateButtonEnabled:(BOOL)enabled {
-    playbackRateButton() ? %orig(YES) : %orig;
+    if (playbackRateButton()) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -34,7 +38,11 @@ static BOOL playbackRateButton(void) {
 }
 
 - (void)setPlaybackRateButtonEnabled:(BOOL)enabled {
-    playbackRateButton() ? %orig(YES) : %orig;
+    if (playbackRateButton()) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 
 // Thanks to @danpashin for help

@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "Headers/LiquidGlass.h"
 
 static BOOL YTMU(NSString *key) {
     NSDictionary *YTMUltimateDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"YTMUltimate"];
@@ -28,6 +29,14 @@ static BOOL YTMU(NSString *key) {
         if ([self.accessibilityIdentifier isEqualToString:@"id.mdx.playbackroute.button"]) {
             self.hidden = YES;
         }
+    }
+
+    // Liquid Glass (iOS 26+). A no-op on older systems, and reversing it keeps
+    // the original background so the toggle can be switched back off.
+    if (YTMU(@"YTMUltimateIsEnabled") && YTMU(@"liquidGlassButtons")) {
+        YTMULiquidGlassApply(self);
+    } else {
+        YTMULiquidGlassRemove(self);
     }
 }
 %end

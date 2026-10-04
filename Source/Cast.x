@@ -10,19 +10,31 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsCastCloudDiscoveryEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)isCastToNativeEnabled {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsCastToNativeEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)isCastEnabled {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsCastEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -37,31 +49,51 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsCastToNativeEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)isPersistentCastIconEnabled {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsPersistentCastIconEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)musicEnableSuggestedCastDevices {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setMusicEnableSuggestedCastDevices:(BOOL)suggest {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)musicClientConfigEnableCastButtonOnPlayerHeader {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setMusicClientConfigEnableCastButtonOnPlayerHeader:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)musicClientConfigEnableAudioOnlyCastingForNonMusicAudio {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setMusicClientConfigEnableAudioOnlyCastingForNonMusicAudio:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -76,7 +108,11 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? NO : %orig;
 }
 - (void)setIsFreeTierAudioCastEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(NO) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 - (void)openMusicPremiumLandingPage {
     if (!YTMU(@"YTMUltimateIsEnabled")) return %orig;
@@ -106,13 +142,21 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsAudioCastEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)isMATScreenedCastEnabled {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsMATScreenedCastEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 

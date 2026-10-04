@@ -16,7 +16,11 @@ static BOOL YTMU(NSString *key) {
 // Headers stuff
 %hook YTLightweightCollectionController
 - (void)setUseStickyHeaders:(BOOL)arg1 {
-	YTMU(@"YTMUltimateIsEnabled") && YTMU(@"noStickyHeaders") ? %orig(NO) : %orig;
+	if (YTMU(@"YTMUltimateIsEnabled") && YTMU(@"noStickyHeaders")) {
+	    %orig(NO);
+	} else {
+	    %orig;
+	}
 }
 %end
 
@@ -35,7 +39,11 @@ static BOOL YTMU(NSString *key) {
 // Make chip clouds (aka headers) background transparent
 %hook YTMChipCloudView
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-    YTMU(@"YTMUltimateIsEnabled") && YTMU(@"noStickyHeaders") ? %orig([UIColor clearColor]) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled") && YTMU(@"noStickyHeaders")) {
+        %orig([UIColor clearColor]);
+    } else {
+        %orig;
+    }
 }
 %end
 

@@ -45,7 +45,11 @@ static BOOL isDisableAutoRadio(void) {
     return isDisableAutoRadio() ? NO : %orig;
 }
 - (void)setAutoplayEnabled:(BOOL)arg { 
-    isDisableAutoRadio() ? %orig(NO) : %orig;
+    if (isDisableAutoRadio()) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -54,7 +58,11 @@ static BOOL isDisableAutoRadio(void) {
     return isDisableAutoRadio() ? NO : %orig;
 }
 - (void)setAutoplayEnabled:(BOOL)arg {
-    isDisableAutoRadio() ? %orig(NO) : %orig;
+    if (isDisableAutoRadio()) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -63,13 +71,21 @@ static BOOL isDisableAutoRadio(void) {
     return isDisableAutoRadio() ? NO : %orig;
 }
 - (void)setAutoplayEnabled:(BOOL)arg {
-    isDisableAutoRadio() ? %orig(NO) : %orig;
+    if (isDisableAutoRadio()) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 %end
 
 %hook YTMQueueCollectionViewController
 - (void)setMDXAutoplayEnabled:(BOOL)arg {
-    isDisableAutoRadio() ? %orig(NO) : %orig;
+    if (isDisableAutoRadio()) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 %end
 

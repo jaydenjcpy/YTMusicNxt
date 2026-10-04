@@ -27,7 +27,11 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? NO : %orig;
 }
 - (void)setAreMementoPromotionsEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(NO) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -75,7 +79,11 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsPassiveSignInUniquePremiumValuePropEnabled:(BOOL)enabled {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (BOOL)musicClientConfigIosEnableMobileAudioTierLockscreenControls {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
@@ -225,7 +233,11 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsPremiumSubscriber:(BOOL)premium {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 - (id)sidePanelPromo{
     return YTMU(@"YTMUltimateIsEnabled") ? nil : %orig;
@@ -264,7 +276,11 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setShouldThrottleInterstitial:(BOOL)throttle {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -300,7 +316,11 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsPremiumSubscriber:(BOOL)premium {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -309,7 +329,11 @@ static BOOL YTMU(NSString *key) {
     return YTMU(@"YTMUltimateIsEnabled") ? YES : %orig;
 }
 - (void)setIsPremiumSubscriber:(BOOL)premium {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -348,28 +372,58 @@ static BOOL YTMU(NSString *key) {
 %end
 
 %hook YTCommonUtils
-- (BOOL)isInternallyDistributedBuild { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (BOOL)isOfflineToDownloadsEnabled { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (BOOL)isUnitOrFunctionalTesting { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (BOOL)isEarlGreyV2FunctionalTesting { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (BOOL)isUnitTesting { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (BOOL)isFunctionalTesting { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (BOOL)isDistributedBuild { return YTMU(@"YTMUltimateIsEnabled") ? NO : %orig; }
+- (BOOL)isInternallyDistributedBuild {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (BOOL)isOfflineToDownloadsEnabled {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (BOOL)isUnitOrFunctionalTesting {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (BOOL)isEarlGreyV2FunctionalTesting {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (BOOL)isUnitTesting {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (BOOL)isFunctionalTesting {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (BOOL)isDistributedBuild {
+    return YTMU(@"YTMUltimateIsEnabled") ? NO : %orig;
+}
 %end
 
 %hook YTMYPCGetOfflineUpsellEndpointCommandHandlerImpl
-- (BOOL)isPremiumSubscriber { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
+- (BOOL)isPremiumSubscriber {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
 %end
 
 %hook YTMCarPlayControllerImpl
-- (BOOL)isPremiumSubscriber { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (void)setPremiumSubscriber:(BOOL)arg1 { return YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig; }
+- (BOOL)isPremiumSubscriber {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (void)setPremiumSubscriber:(BOOL)arg1 {
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
+}
 %end
 
 %hook YTMMusicAppMetadataImpl
-- (BOOL)isPremiumSubscriber { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (BOOL)isMobileAudioTier { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
-- (id)sidePanelPromo { return YTMU(@"YTMUltimateIsEnabled") ? nil : %orig; }
+- (BOOL)isPremiumSubscriber {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (BOOL)isMobileAudioTier {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
+- (id)sidePanelPromo {
+    return YTMU(@"YTMUltimateIsEnabled") ? nil : %orig;
+}
 %end
 
 %hook YTMAppResponderImpl

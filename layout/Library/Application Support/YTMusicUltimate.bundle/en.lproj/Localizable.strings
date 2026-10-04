@@ -58,6 +58,10 @@
 "HIDE_CAST_BUTTON_DESC" = "Hides cast button in the navigation bar";
 "HIDE_FILTER_BUTTON" = "Remove sort filter button";
 "HIDE_FILTER_BUTTON_DESC" = "Removes Library/Downloads filter button from the navigation bar";
+"LIQUID_GLASS_BUTTONS" = "Liquid glass buttons";
+"LIQUID_GLASS_BUTTONS_DESC" = "Applies the iOS 26 Liquid Glass material to navigation bar buttons. Requires iOS 26.";
+"LIQUID_GLASS_TABBAR" = "Liquid glass tab bar";
+"LIQUID_GLASS_TABBAR_DESC" = "Renders the tab bar with the iOS 26 Liquid Glass material. Requires iOS 26.";
 
 "TABBAR_SETTINGS" = "Tab bar options";
 "STARTUP_TAB" = "Startup tab";

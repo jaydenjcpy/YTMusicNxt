@@ -70,18 +70,44 @@ static BOOL isLowContrast() {
 %end
 
 %hook YTMPlayerPageColorScheme
-- (UIColor *)backgroundColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)expandedTabsBackgroundColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)miniPlayerColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)expandedTabViewColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)overlayButtonColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)overlayErrorBackgroundColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)AVSwitchBackgroundColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)AVSwitchActiveModeColor { return isOLEDTheme() ? [[UIColor whiteColor] colorWithAlphaComponent:0.1] : %orig; }
-- (UIColor *)queueBackgroundColor { return isOLEDTheme() ? [UIColor blackColor] : %orig; }
-- (UIColor *)queueCurrentlyPlayingColor { return isOLEDTheme() ? [[UIColor whiteColor] colorWithAlphaComponent:0.1] : %orig; }
+- (UIColor *)backgroundColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)expandedTabsBackgroundColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)miniPlayerColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)expandedTabViewColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)overlayButtonColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)overlayErrorBackgroundColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+// AVSwitchBackgroundColor was replaced in 9.39 by explicit light/dark variants.
+- (UIColor *)AVSwitchBackgroundLightColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)AVSwitchBackgroundDarkColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)AVSwitchActiveModeColor {
+    return isOLEDTheme() ? [[UIColor whiteColor] colorWithAlphaComponent:0.1] : %orig;
+}
+- (UIColor *)queueBackgroundColor {
+    return isOLEDTheme() ? [UIColor blackColor] : %orig;
+}
+- (UIColor *)queueCurrentlyPlayingColor {
+    return isOLEDTheme() ? [[UIColor whiteColor] colorWithAlphaComponent:0.1] : %orig;
+}
 
-- (BOOL)gradientBackgroundEnabled { return isOLEDTheme() ? NO : %orig; }
+- (BOOL)gradientBackgroundEnabled {
+    return isOLEDTheme() ? NO : %orig;
+}
 %end
 
 %hook YTPivotBarView
@@ -181,7 +207,13 @@ static BOOL isLowContrast() {
 %end
 
 %hook UIKBRenderConfig // Prediction text color
-- (void)setLightKeyboard:(BOOL)arg1 { isOLEDKeyboard() ? %orig(NO) : %orig; }
+- (void)setLightKeyboard:(BOOL)arg1 {
+    if (isOLEDKeyboard()) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
+}
 %end
 
 %hook UIKeyboardDockView

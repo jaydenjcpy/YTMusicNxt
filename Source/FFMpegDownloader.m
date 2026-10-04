@@ -95,8 +95,16 @@
     int timeInMilliseconds = [statistics getTime];
     if (timeInMilliseconds > 0) {
         double totalVideoDuration = self.duration;
+        // A zero/negative duration produced a divide-by-zero here, which pushed
+        // NaN/infinity into the ring and left the HUD stuck at a bogus value.
+        if (totalVideoDuration <= 0) {
+            return;
+        }
+
         double timeInSeconds = timeInMilliseconds / 1000.0;
         double percentage = timeInSeconds / totalVideoDuration;
+        if (percentage < 0) percentage = 0;
+        if (percentage > 1) percentage = 1;
 
         if (self.hud && self.hud.mode == MBProgressHUDModeAnnularDeterminate) {
             self.hud.progress = percentage;
@@ -138,21 +146,57 @@
 }
 
 - (void)downloadImage:(NSURL *)link {
+    if (!link) {
+        [self showImageResult:NO];
+        return;
+    }
+
+    // -dataWithContentsOfURL: has no timeout and blocks the calling thread. When
+    // this ran on the main queue a dead connection froze the UI permanently and
+    // the cover download never resolved. Use a session with real timeouts instead.
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    config.timeoutIntervalForRequest = 20.0;
+    config.timeoutIntervalForResource = 120.0;
+
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    NSURLSessionDataTask *task = [session dataTaskWithURL:link completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSHTTPURLResponse *http = [response isKindOfClass:[NSHTTPURLResponse class]] ? (NSHTTPURLResponse *)response : nil;
+        UIImage *image = (data.length > 0 && http.statusCode >= 200 && http.statusCode < 300) ? [UIImage imageWithData:data] : nil;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (image) {
+                // Report the real save result: Photos can refuse the write (e.g.
+                // permission denied) and the old code showed a success tick anyway.
+                UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+            } else {
+                [self showImageResult:NO];
+            }
+        });
+
+        [session finishTasksAndInvalidate];
+    }];
+    [task resume];
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSData *imageData = [NSData dataWithContentsOfURL:link];
-        UIImage *image = [UIImage imageWithData:imageData];
-
-        if (image) UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-        self.hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-        self.hud.mode = MBProgressHUDModeCustomView;
-        self.hud.label.text = LOC(@"SAVED_TO_PHOTOS");
-
-        UIImageView *checkmarkImageView = [[UIImageView alloc] initWithImage:[self imageWithSystemIconNamed:@"checkmark"]];
-        checkmarkImageView.contentMode = UIViewContentModeScaleAspectFit;
-        self.hud.customView = checkmarkImageView;
-
-        [self.hud hideAnimated:YES afterDelay:2.0];
+        [self showImageResult:error == nil];
     });
+}
+
+- (void)showImageResult:(BOOL)success {
+    self.hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.label.text = success ? LOC(@"SAVED_TO_PHOTOS") : LOC(@"OOPS");
+    self.hud.label.numberOfLines = 0;
+
+    UIImageView *iconView = [[UIImageView alloc] initWithImage:[self imageWithSystemIconNamed:success ? @"checkmark" : @"xmark"]];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    self.hud.customView = iconView;
+
+    // Always tear the HUD down, success or failure, so the user is never left
+    // staring at a spinner that will not go away.
+    [self.hud hideAnimated:YES afterDelay:2.0];
 }
 
 - (UIImage *)imageWithSystemIconNamed:(NSString *)iconName {

@@ -30,7 +30,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return 5;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -49,7 +49,8 @@
             @{@"title": LOC(@"DONT_STICK_HEADERS"), @"desc": LOC(@"DONT_STICK_HEADERS_DESC"), @"key": @"noStickyHeaders"},
             @{@"title": LOC(@"HIDE_HISTORY_BUTTON"), @"desc": LOC(@"HIDE_HISTORY_BUTTON_DESC"), @"key": @"hideHistoryButton"},
             @{@"title": LOC(@"HIDE_CAST_BUTTON"), @"desc": LOC(@"HIDE_CAST_BUTTON_DESC"),@"key": @"hideCastButton"},
-            @{@"title": LOC(@"HIDE_FILTER_BUTTON"), @"desc": LOC(@"HIDE_FILTER_BUTTON_DESC"), @"key": @"hideFilterButton"}
+            @{@"title": LOC(@"HIDE_FILTER_BUTTON"), @"desc": LOC(@"HIDE_FILTER_BUTTON_DESC"), @"key": @"hideFilterButton"},
+            @{@"title": LOC(@"LIQUID_GLASS_BUTTONS"), @"desc": LOC(@"LIQUID_GLASS_BUTTONS_DESC"), @"key": @"liquidGlassButtons"}
         ];
 
         NSDictionary *data = settingsData[indexPath.row];
@@ -81,6 +82,7 @@
         @{@"key": @"hideHistoryButton"},
         @{@"key": @"hideCastButton"},
         @{@"key": @"hideFilterButton"},
+        @{@"key": @"liquidGlassButtons"},
     ];
 
     NSDictionary *data = settingsData[sender.tag];

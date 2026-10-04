@@ -2,6 +2,7 @@
 #import "Headers/YTPivotBarView.h"
 #import "Headers/YTIPivotBarSupportedRenderers.h"
 #import "Headers/YTAssetLoader.h"
+#import "Headers/GlassTabBar.h"
 #import "Prefs/YTMDownloads.h"
 
 static BOOL YTMU(NSString *key) {
@@ -61,6 +62,22 @@ static BOOL YTMU(NSString *key) {
     }
 
     %orig(renderer);
+}
+%end
+
+// Liquid Glass tab bar (iOS 26+): overlays a real UITabBar, which iOS 26 styles
+// as glass natively, and replays taps onto the stock YTPivotBarItemViews. The
+// controller only hides the real bar once every item has artwork, so a failure
+// here degrades to YouTube's own tab bar rather than a dead strip.
+%hook YTPivotBarView
+- (void)layoutSubviews {
+    %orig;
+
+    if (YTMU(@"YTMUltimateIsEnabled") && YTMU(@"liquidGlassTabBar")) {
+        [YTMUGlassTabBarController sync:self];
+    } else {
+        [YTMUGlassTabBarController teardown:self];
+    }
 }
 %end
 

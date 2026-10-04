@@ -88,10 +88,16 @@ static BOOL YTMU(NSString *key) {
 
 %hook YTColdConfig
 - (NSInteger)iosPlayerClientSharedConfigTransportControlsSeekForwardTime {
-    return (seekTime() == 0) ? %orig : seekTime();
+    if ((seekTime() == 0)) {
+        return %orig;
+    }
+    return seekTime();
 }
 
 - (NSInteger)iosPlayerClientSharedConfigTransportControlsSeekBackwardTime {
-    return (seekTime() == 0) ? %orig : seekTime();
+    if ((seekTime() == 0)) {
+        return %orig;
+    }
+    return seekTime();
 }
 %end

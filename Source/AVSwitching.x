@@ -32,11 +32,19 @@ static int YTMUint(NSString *key) {
 }
 
 - (void)setIsAudioOnlyAvailabilityBlocked:(BOOL)blocked{
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(NO) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 
 - (void)setYtm_isAudioOnlyPlayable:(BOOL)playable{
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -46,11 +54,19 @@ static int YTMUint(NSString *key) {
 }
 
 - (void)setIsAudioOnlyBlocked:(BOOL)blocked {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(NO) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(NO);
+    } else {
+        %orig;
+    }
 }
 
 - (void)setSwitchAvailability:(NSInteger)arg1 {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(1) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(1);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -60,7 +76,11 @@ static int YTMUint(NSString *key) {
 }
 
 - (void)setIsAudioVideoModeSupported:(BOOL)supported {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 
 /*
@@ -75,19 +95,45 @@ static int YTMUint(NSString *key) {
 %end
 
 %hook YTMAudioVideoModeControllerInternalImpl
-- (void)setSwitchAvailability:(NSInteger)arg1 { YTMU(@"YTMUltimateIsEnabled") ? %orig(1) : %orig; }
-- (NSInteger)switchAvailability { return YTMU(@"YTMUltimateIsEnabled") ? 1 : %orig; }
-- (BOOL)isAudioOnlyBlocked { return YTMU(@"YTMUltimateIsEnabled") ? NO : %orig; }
+- (void)setSwitchAvailability:(NSInteger)arg1 {
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(1);
+    } else {
+        %orig;
+    }
+}
+- (NSInteger)switchAvailability {
+    return YTMU(@"YTMUltimateIsEnabled") ? 1 : %orig;
+}
+- (BOOL)isAudioOnlyBlocked {
+    return YTMU(@"YTMUltimateIsEnabled") ? NO : %orig;
+}
 %end
 
 %hook YTVideoQualitySwitchRedesignedController
-- (void)setAllowAudioOnlyManualQualitySelection:(BOOL)arg1 { YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig; }
-- (BOOL)allowAudioOnlyManualQualitySelection { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
+- (void)setAllowAudioOnlyManualQualitySelection:(BOOL)arg1 {
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
+}
+- (BOOL)allowAudioOnlyManualQualitySelection {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
 %end
 
 %hook YTVideoQualitySwitchOriginalController
-- (void)setAllowAudioOnlyManualQualitySelection:(BOOL)arg1 { YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig; }
-- (BOOL)allowAudioOnlyManualQualitySelection { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
+- (void)setAllowAudioOnlyManualQualitySelection:(BOOL)arg1 {
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
+}
+- (BOOL)allowAudioOnlyManualQualitySelection {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
 %end
 
 %hook YTDefaultQueueConfig
@@ -100,7 +146,11 @@ static int YTMUint(NSString *key) {
 }
 
 - (void)setIsAudioVideoModeSupported:(BOOL)supported {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -126,7 +176,11 @@ static int YTMUint(NSString *key) {
 }
 
 - (void)setAudioOnlyPlayability:(BOOL)playability {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 
 - (id)infoRenderer {
@@ -154,7 +208,11 @@ static int YTMUint(NSString *key) {
 }
 
 - (void)setSupportsAudioVideoSwitching:(BOOL)arg1 {
-    YTMU(@"YTMUltimateIsEnabled") ? %orig(YES) : %orig;
+    if (YTMU(@"YTMUltimateIsEnabled")) {
+        %orig(YES);
+    } else {
+        %orig;
+    }
 }
 %end
 
@@ -198,7 +256,9 @@ static int YTMUint(NSString *key) {
 - (BOOL)noVideoModeEnabled:(id)arg1 {
 	return YTMUint(@"audioVideoMode") == 0 ? YES : %orig;
 }
-- (BOOL)isAudioVideoModeSupportedForVideo:(id)video { return YTMU(@"YTMUltimateIsEnabled") ?: %orig; }
+- (BOOL)isAudioVideoModeSupportedForVideo:(id)video {
+    return YTMU(@"YTMUltimateIsEnabled") ?: %orig;
+}
 %end
 
 %hook YTColdConfig

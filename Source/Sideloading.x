@@ -64,7 +64,9 @@ static NSString *accessGroupID() {
 %hook SSOConfiguration
 - (BOOL)shouldEnableSafariSignIn { return YES; }
 - (BOOL)temporarilyDisableSafariSignIn { return NO; }
-- (void)setTemporarilyDisableSafariSignIn:(BOOL)arg1 { return %orig(NO); }
+- (void)setTemporarilyDisableSafariSignIn:(BOOL)arg1 {
+    return %orig(NO);
+}
 %end
 
 %hook SSOKeychainHelper
@@ -183,7 +185,9 @@ static NSString *accessGroupID() {
     [self setValue:YT_BUNDLE_ID forKey:@"_applicationIdentifier"];
     return self;
 }
-- (void)setShortAppName:(id)appName { %orig(YT_NAME); }
+- (void)setShortAppName:(id)appName {
+    %orig(YT_NAME);
+}
 %end
 
 %hook NSBundle
