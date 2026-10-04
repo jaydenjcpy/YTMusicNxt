@@ -27,6 +27,11 @@
                          license:@"MIT"
                              url:@"https://github.com/irum0320/VolumeBoostYT"
                          changes:@"YouTube-only settings injection replaced by a switch in YTMusicUltimate settings; defaults to off."],
+            [self creditWithName:@"Return-YouTube-Music-Dislikes"
+                          author:@"PoomSmart"
+                         license:@"GPL-3.0"
+                             url:@"https://github.com/PoomSmart/Return-YouTube-Music-Dislikes"
+                         changes:@"Settings screen replaced by switches in YTMusicUltimate settings, defaults off, nil video IDs handled."],
         ];
     });
 

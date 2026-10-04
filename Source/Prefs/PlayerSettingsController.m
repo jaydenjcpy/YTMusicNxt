@@ -31,7 +31,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 8;
+        return 12;
     } if (section == 2) {
         return 3;
     } if (section == 3) {
@@ -69,7 +69,11 @@
             @{@"title": LOC(@"VOLBAR"), @"desc": LOC(@"VOLBAR_DESC"), @"key": @"volBar"},
             @{@"title": LOC(@"NO_AUTORADIO"), @"desc": LOC(@"NO_AUTORADIO_DESC"), @"key": @"disableAutoRadio"},
             @{@"title": LOC(@"SKIP_CONTENT_WARNING"), @"desc": LOC(@"SKIP_CONTENT_WARNING_DESC"), @"key": @"skipWarning"},
-            @{@"title": LOC(@"VOLUME_BOOST"), @"desc": LOC(@"VOLUME_BOOST_DESC"), @"key": @"volumeBoost"}
+            @{@"title": LOC(@"VOLUME_BOOST"), @"desc": LOC(@"VOLUME_BOOST_DESC"), @"key": @"volumeBoost"},
+            @{@"title": LOC(@"RETURN_DISLIKES"), @"desc": LOC(@"RETURN_DISLIKES_DESC"), @"key": @"returnDislikes"},
+            @{@"title": LOC(@"RETURN_DISLIKES_EXACT_LIKE"), @"desc": LOC(@"RETURN_DISLIKES_EXACT_LIKE_DESC"), @"key": @"returnDislikesExactLike"},
+            @{@"title": LOC(@"RETURN_DISLIKES_RAW"), @"desc": LOC(@"RETURN_DISLIKES_RAW_DESC"), @"key": @"returnDislikesRawData"},
+            @{@"title": LOC(@"RETURN_DISLIKES_VOTE"), @"desc": LOC(@"RETURN_DISLIKES_VOTE_DESC"), @"key": @"returnDislikesVoteSubmission"}
         ];
 
         NSDictionary *data = settingsData[indexPath.row];
@@ -214,6 +218,10 @@
         @{@"key": @"disableAutoRadio"},
         @{@"key": @"skipWarning"},
         @{@"key": @"volumeBoost"},
+        @{@"key": @"returnDislikes"},
+        @{@"key": @"returnDislikesExactLike"},
+        @{@"key": @"returnDislikesRawData"},
+        @{@"key": @"returnDislikesVoteSubmission"},
     ];
 
     NSDictionary *data = settingsData[sender.tag];

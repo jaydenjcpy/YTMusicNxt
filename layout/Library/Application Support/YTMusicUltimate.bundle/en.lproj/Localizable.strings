@@ -127,3 +127,12 @@
 "RENAME" = "Rename";
 
 "VENDORED_CREDITS" = "Third-party tweaks used with permission";
+
+"RETURN_DISLIKES" = "Dislike counts";
+"RETURN_DISLIKES_DESC" = "Show real dislike counts from the Return YouTube Dislike database";
+"RETURN_DISLIKES_EXACT_LIKE" = "Exact like count";
+"RETURN_DISLIKES_EXACT_LIKE_DESC" = "Replace the rounded like count with the exact number";
+"RETURN_DISLIKES_RAW" = "Original dislike count";
+"RETURN_DISLIKES_RAW_DESC" = "Use the count before YouTube hid it, instead of the reconstructed one";
+"RETURN_DISLIKES_VOTE" = "Submit your votes";
+"RETURN_DISLIKES_VOTE_DESC" = "Send your likes and dislikes to the Return YouTube Dislike database";

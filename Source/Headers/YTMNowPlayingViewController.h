@@ -1,7 +1,9 @@
 #import "YTMWatchViewController.h"
+#import "YTILikeButtonRenderer.h"
 
 @interface YTMNowPlayingViewController : UIViewController
 @property (nonatomic, weak, readwrite) YTMWatchViewController *parentViewController;
+@property (nonatomic, strong, readonly) YTILikeButtonRenderer *likeButtonRenderer;
 
 - (void)didTapNextButton;
 - (void)didTapPrevButton;

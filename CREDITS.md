@@ -25,6 +25,28 @@ VolumeBoostYT
               instead, and defaults to off.
 
 
+Return-YouTube-Music-Dislikes
+---------------------------
+  Upstream:   https://github.com/PoomSmart/Return-YouTube-Music-Dislikes
+  Also:       https://github.com/PoomSmart/Return-YouTube-Dislikes
+  Author:     PoomSmart
+  Licence:    GPL-3.0
+  Files:      Source/ReturnDislikes/, Source/Headers/ASDisplayNode.h,
+              Source/Headers/YTILikeButtonRenderer.h
+  Changes:    YouTube Music hides dislike counts but still builds the
+              like/dislike row, so the counts are fetched from the Return
+              YouTube Dislike database and written over the "Dislike" label.
+              The upstream Settings.x is dropped: it builds its UI from
+              YTMSettingsSectionItem's itemWithTitle:... and
+              switchItemWithTitle:... factories, which 9.39 no longer has. The
+              four switches live in YTMusicUltimate > Player options instead and
+              all default to off, so nothing is sent to the RYD database until
+              the user asks for it. Only the YTLikeServiceImpl vote hook is
+              installed, because YTLikeService no longer exists. Upstream's ICU
+              compact number formatting is replaced by the K/M/B suffixes it
+              uses on iOS 12, since theos' iPhoneOS SDK ships no ICU headers.
+
+
 Before vendoring another tweak into this project
 ------------------------------------------------
   1. Add an entry to +[YTMUVendoredCredit allCredits] in Source/VendoredCredits.m.
