@@ -37,6 +37,11 @@
                          license:@"GPL-3.0"
                              url:@"https://github.com/PoomSmart/YTMABConfig"
                          changes:@"Settings screen replaced by a searchable flag browser; config chain walked defensively."],
+            [self creditWithName:@"YouMusicPiP"
+                          author:@"PoomSmart"
+                         license:@"MIT"
+                             url:@"https://github.com/PoomSmart/YouMusicPiP"
+                         changes:@"Rebuilt for 9.39: renamed PiP controller, deleted backgroundability policies, moved resign-active callback."],
         ];
     });
 

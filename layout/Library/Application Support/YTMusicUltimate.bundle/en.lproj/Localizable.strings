@@ -147,3 +147,6 @@
 "AB_FLAGS_RESET_MESSAGE" = "This clears every A/B flag you changed and puts YouTube back in charge. The app has to restart for it to take effect.";
 "AB_FLAGS_RESTART" = "A/B flags are hooked when the app starts. Relaunch YouTube Music for your changes to take effect.";
 "OK" = "OK";
+
+"PICTURE_IN_PICTURE" = "Picture in picture";
+"PICTURE_IN_PICTURE_DESC" = "Start picture in picture for music videos when you leave the app";

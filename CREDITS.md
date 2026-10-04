@@ -74,6 +74,39 @@ YTMABConfig
               carried over.
 
 
+YouMusicPiP
+-----------
+  Upstream:   https://github.com/PoomSmart/YouMusicPiP
+  Based on:   https://github.com/PoomSmart/YouPiP
+  Author:     PoomSmart
+  Licence:    MIT, Copyright (c) 2021 - 2024 PoomSmart
+  Files:      Source/MusicPiP/YouMusicPiP.x, Source/Headers/MusicPiP.h
+  Changes:    This is the one port that had to be rebuilt rather than moved.
+              Upstream hooks four things that no longer exist in 9.39:
+              MLPIPController (now MLPIPControllerImpl),
+              YTBackgroundabilityPolicy and its Impl (deleted),
+              YTPlayerViewController's -appWillResignActive: (the callback moved
+              to YTPlayerPIPController as -appWillResignActive, with no
+              argument), and YTIPlayabilityStatus's -hasPictureInPicture. Three
+              of MLDefaultPlayerViewFactory's ...ForVideo: methods are gone too.
+              Its server-side trick is dead as well: YTHotConfig no longer
+              exposes mediaHotConfig, and YTIIosMediaHotConfig no longer has an
+              enablePictureInPicture property, so writing it would have raised
+              an unrecognised-selector exception.
+              The same intent is reached through the client-side gates that do
+              exist: YTPlayerPIPController's isPictureInPictureAllowed,
+              isEligibleForPictureInPicture and canEnablePictureInPicture,
+              MLPIPControllerImpl's pictureInPictureSupported,
+              AVPictureInPictureController's supported check, and
+              YTIPlayabilityStatus's two playability flags. Leaving the app is
+              caught on YTPlayerPIPController -appWillResignActive, which then
+              activates the MediaHub PiP controller and starts the AVPlayer one.
+              Forcing the AVPlayer render view (renderViewType 6) is kept, since
+              hamplayer views cannot be handed to AVPlayerViewController.
+              Defaults off, because it changes how video renders even when PiP
+              is never used.
+
+
 Before vendoring another tweak into this project
 ------------------------------------------------
   1. Add an entry to +[YTMUVendoredCredit allCredits] in Source/VendoredCredits.m.

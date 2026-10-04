@@ -31,7 +31,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 12;
+        return 13;
     } if (section == 2) {
         return 3;
     } if (section == 3) {
@@ -70,6 +70,7 @@
             @{@"title": LOC(@"NO_AUTORADIO"), @"desc": LOC(@"NO_AUTORADIO_DESC"), @"key": @"disableAutoRadio"},
             @{@"title": LOC(@"SKIP_CONTENT_WARNING"), @"desc": LOC(@"SKIP_CONTENT_WARNING_DESC"), @"key": @"skipWarning"},
             @{@"title": LOC(@"VOLUME_BOOST"), @"desc": LOC(@"VOLUME_BOOST_DESC"), @"key": @"volumeBoost"},
+            @{@"title": LOC(@"PICTURE_IN_PICTURE"), @"desc": LOC(@"PICTURE_IN_PICTURE_DESC"), @"key": @"pictureInPicture"},
             @{@"title": LOC(@"RETURN_DISLIKES"), @"desc": LOC(@"RETURN_DISLIKES_DESC"), @"key": @"returnDislikes"},
             @{@"title": LOC(@"RETURN_DISLIKES_EXACT_LIKE"), @"desc": LOC(@"RETURN_DISLIKES_EXACT_LIKE_DESC"), @"key": @"returnDislikesExactLike"},
             @{@"title": LOC(@"RETURN_DISLIKES_RAW"), @"desc": LOC(@"RETURN_DISLIKES_RAW_DESC"), @"key": @"returnDislikesRawData"},
@@ -218,6 +219,7 @@
         @{@"key": @"disableAutoRadio"},
         @{@"key": @"skipWarning"},
         @{@"key": @"volumeBoost"},
+        @{@"key": @"pictureInPicture"},
         @{@"key": @"returnDislikes"},
         @{@"key": @"returnDislikesExactLike"},
         @{@"key": @"returnDislikesRawData"},
