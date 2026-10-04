@@ -70,3 +70,20 @@
 @interface YTIHamplayerConfig : NSObject
 @property (nonatomic) int renderViewType;
 @end
+
+// The server config that actually decides whether YouTube offers picture in
+// picture at all. Both properties below exist on 9.39; the enablePictureInPicture
+// property that older builds of YouMusicPiP set does not, which is why those
+// versions are worth re-porting rather than copying.
+@interface YTIIosMediaHotConfig : NSObject
+
+@property (nonatomic) BOOL enablePipForNonPremiumUsers;
+@property (nonatomic) BOOL enablePipForNonBackgroundableContent;
+
+@end
+
+@interface YTHotConfig : NSObject
+
+@property (nonatomic, strong, readonly) YTIIosMediaHotConfig *mediaHotConfig;
+
+@end

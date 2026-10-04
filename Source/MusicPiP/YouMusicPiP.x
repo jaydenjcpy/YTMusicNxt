@@ -18,11 +18,12 @@
 //     -canInvokePictureInPicture is now -canEnablePictureInPicture. The
 //     "app is leaving" callback that matters now lives on YTPlayerPIPController
 //     as -appWillResignActive, with no argument, so that is what is hooked.
-//   * YTHotConfig no longer exposes mediaHotConfig, so upstream's trick of
-//     flipping enablePictureInPicture on the server config has nothing to flip.
-//     The client-side gates above are used instead. enablePictureInPicture is
-//     also not a property of YTIIosMediaHotConfig any more, so writing it would
-//     have raised an unrecognised-selector exception.
+//   * YTHotConfig's mediaHotConfig is still there, but
+//     YTIIosMediaHotConfig no longer has an enablePictureInPicture property, so
+//     upstream's assignment cannot be copied. Its PiP properties in 9.39 are
+//     enablePipForNonPremiumUsers, enablePipForNonBackgroundableContent,
+//     enablePipForRubyUsers and enablePipInteractionLogging, and the first two
+//     are what actually gate PiP in a music app.
 //   * YTIPlayabilityStatus lost -hasPictureInPicture.
 //   * MLDefaultPlayerViewFactory lost the three ...ForVideo: variants.
 //
@@ -96,6 +97,58 @@ static void YTMUForceAVPlayerRenderView(id playerConfig) {
     [playerConfig setRenderViewType:6];
 }
 
+// This is the part that actually turns PiP on.
+//
+// YouTube decides whether to offer picture in picture from its server config,
+// and in a music app the gate is YTIIosMediaHotConfig's
+// enablePipForNonPremiumUsers. With it off, nothing else matters: the player
+// never asks AVPictureInPictureController to be ready, never sets
+// canStartPictureInPictureAutomaticallyFromInline, and the video mode has no
+// PiP to start. Every other hook in this file only removes a second gate.
+//
+// Upstream sets mediaHotConfig.enablePictureInPicture instead. That property
+// no longer exists on YTIIosMediaHotConfig in 9.39 - its PiP properties are now
+// enablePipForNonPremiumUsers, enablePipForNonBackgroundableContent,
+// enablePipForRubyUsers and enablePipInteractionLogging - so the old line
+// either did nothing or raised. This is the 9.39 equivalent.
+//
+// Both the object and the setters are resolved dynamically because
+// YTIIosMediaHotConfig is a Protobuf message: its accessors are not in the
+// class's method list.
+// Both MLDefaultPlayerViewFactory and YTPlayerPIPController keep the hot
+// config in _hotConfig.
+static YTHotConfig *YTMUHotConfigFrom(id object) {
+    id hotConfig = nil;
+    @try {
+        hotConfig = [object valueForKey:@"_hotConfig"];
+    } @catch (id exception) {
+        return nil;
+    }
+    // %c() rather than [YTHotConfig class]: the tweak does not link against
+    // YouTube's classes, so a direct class reference would be a link error.
+    if (![hotConfig isKindOfClass:%c(YTHotConfig)]) return nil;
+    return (YTHotConfig *)hotConfig;
+}
+
+static void YTMUForceEnablePictureInPicture(YTHotConfig *hotConfig) {
+    if (hotConfig == nil) return;
+
+    YTIIosMediaHotConfig *mediaHotConfig = hotConfig.mediaHotConfig;
+    if (mediaHotConfig == nil) return;
+
+    // Both of these are what a music app leaves off to keep PiP out of the way.
+    // The respondsToSelector guards are not paranoia: a Protobuf accessor that
+    // disappears in a future version would otherwise raise here, on a hook that
+    // runs every time a video view is built.
+    if ([mediaHotConfig respondsToSelector:@selector(setEnablePipForNonPremiumUsers:)]) {
+        mediaHotConfig.enablePipForNonPremiumUsers = YES;
+    }
+
+    if ([mediaHotConfig respondsToSelector:@selector(setEnablePipForNonBackgroundableContent:)]) {
+        mediaHotConfig.enablePipForNonBackgroundableContent = YES;
+    }
+}
+
 #pragma mark - PiP support
 
 %hook AVPictureInPictureController
@@ -156,6 +209,7 @@ static void YTMUForceAVPlayerRenderView(id playerConfig) {
     if (!YTMUPiPEnabled()) return;
 
     YTMSingleVideoIsLivePlaybackOverride = YES;
+    YTMUForceEnablePictureInPicture(YTMUHotConfigFrom(self));
     YTMUStartPictureInPicture(self);
     YTMSingleVideoIsLivePlaybackOverride = NO;
 }
@@ -173,16 +227,19 @@ static void YTMUForceAVPlayerRenderView(id playerConfig) {
 %hook MLDefaultPlayerViewFactory
 
 - (id)AVPlayerViewForPlayerConfig:(MLInnerTubePlayerConfig *)playerConfig {
+    YTMUForceEnablePictureInPicture(YTMUHotConfigFrom(self));
     YTMUForceAVPlayerRenderView(playerConfig);
     return %orig;
 }
 
 - (id)hamPlayerViewForPlayerConfig:(MLInnerTubePlayerConfig *)playerConfig {
+    YTMUForceEnablePictureInPicture(YTMUHotConfigFrom(self));
     YTMUForceAVPlayerRenderView(playerConfig);
     return %orig;
 }
 
 - (BOOL)canUsePlayerView:(id)playerView forPlayerConfig:(MLInnerTubePlayerConfig *)playerConfig {
+    YTMUForceEnablePictureInPicture(YTMUHotConfigFrom(self));
     YTMUForceAVPlayerRenderView(playerConfig);
     return %orig;
 }

@@ -89,18 +89,22 @@ YouMusicPiP
               to YTPlayerPIPController as -appWillResignActive, with no
               argument), and YTIPlayabilityStatus's -hasPictureInPicture. Three
               of MLDefaultPlayerViewFactory's ...ForVideo: methods are gone too.
-              Its server-side trick is dead as well: YTHotConfig no longer
-              exposes mediaHotConfig, and YTIIosMediaHotConfig no longer has an
-              enablePictureInPicture property, so writing it would have raised
-              an unrecognised-selector exception.
-              The same intent is reached through the client-side gates that do
-              exist: YTPlayerPIPController's isPictureInPictureAllowed,
-              isEligibleForPictureInPicture and canEnablePictureInPicture,
-              MLPIPControllerImpl's pictureInPictureSupported,
-              AVPictureInPictureController's supported check, and
-              YTIPlayabilityStatus's two playability flags. Leaving the app is
-              caught on YTPlayerPIPController -appWillResignActive, which then
-              activates the MediaHub PiP controller and starts the AVPlayer one.
+              Its server-side assignment had to be rewritten rather than
+              dropped: YTIIosMediaHotConfig no longer has an
+              enablePictureInPicture property, but it does have
+              enablePipForNonPremiumUsers and
+              enablePipForNonBackgroundableContent, which are what gate
+              picture in picture in a music app. Those are set from
+              MLDefaultPlayerViewFactory, where upstream sets the old one, and
+              this is the part that actually turns the feature on.
+              The client-side gates are forced as well: YTPlayerPIPController's
+              isPictureInPictureAllowed, isEligibleForPictureInPicture and
+              canEnablePictureInPicture, MLPIPControllerImpl's
+              pictureInPictureSupported, AVPictureInPictureController's
+              supported check, and YTIPlayabilityStatus's two playability
+              flags. Leaving the app is caught on YTPlayerPIPController
+              -appWillResignActive, which then activates the MediaHub PiP
+              controller and starts the AVPlayer one.
               Forcing the AVPlayer render view (renderViewType 6) is kept, since
               hamplayer views cannot be handed to AVPlayerViewController.
               Defaults off, because it changes how video renders even when PiP
